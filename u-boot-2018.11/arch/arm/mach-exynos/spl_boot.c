@@ -221,8 +221,13 @@ void copy_uboot_to_ram(void)
 		break;
 #endif
 	case BOOT_MODE_SD:
+#ifdef CONFIG_TINY4412
+		offset = UBOOT_START_OFFSET;
+		size = UBOOT_SIZE_BLOC_COUNT;
+#else
 		offset = BL2_START_OFFSET;
 		size = BL2_SIZE_BLOC_COUNT;
+#endif
 		copy_bl2 = get_irom_func(MMC_INDEX);
 		break;
 #ifdef CONFIG_SUPPORT_EMMC_BOOT
@@ -282,11 +287,12 @@ static void setup_global_data(gd_t *gdp)
 	gd->have_console = 1;
 }
 
+
+
 void board_init_f(unsigned long bootflag)
 {
 	__aligned(8) gd_t local_gd;
 	__attribute__((noreturn)) void (*uboot)(void);
-
 	setup_global_data(&local_gd);
 
 	if (do_lowlevel_init())

@@ -24,9 +24,14 @@
  */
 
 #include <config.h>
+#include <debug_uart.h>
 #include <asm/arch/dmc.h>
 #include "common_setup.h"
+#ifdef CONFIG_TINY4412
+#include "exynos4x12_setup.h"
+#else
 #include "exynos4_setup.h"
+#endif
 
 struct mem_timings mem = {
 	.direct_cmd_msr = {
@@ -45,9 +50,11 @@ struct mem_timings mem = {
 	.memcontrol = MEMCONTROL_VAL,
 	.memconfig0 = MEMCONFIG0_VAL,
 	.memconfig1 = MEMCONFIG1_VAL,
+	.ivcontrol = IVCONTROL_VAL,
 	.dll_resync = FORCE_DLL_RESYNC,
 	.dll_on = DLL_CONTROL_ON,
 };
+
 static void phy_control_reset(int ctrl_no, struct exynos4_dmc *dmc)
 {
 	if (ctrl_no) {
@@ -55,6 +62,8 @@ static void phy_control_reset(int ctrl_no, struct exynos4_dmc *dmc)
 		       &dmc->phycontrol1);
 		writel((mem.control1 | (0 << mem.dll_resync)),
 		       &dmc->phycontrol1);
+		/* datasheet P1060 18.9 Memory Channels Interleavings */
+		writel(mem.ivcontrol, &dmc->ivcontrol);
 	} else {
 		writel((mem.control0 | (0 << mem.dll_on)),
 		       &dmc->phycontrol0);
@@ -175,7 +184,7 @@ void mem_ctrl_init(int reset)
 	 * 0: full_sync
 	 */
 	writel(1, ASYNC_CONFIG);
-#ifdef CONFIG_ORIGEN
+#if defined(CONFIG_ORIGEN) || defined(CONFIG_TINY4412)
 	/* Interleave: 2Bit, Interleave_bit1: 0x15, Interleave_bit0: 0x7 */
 	writel(APB_SFR_INTERLEAVE_CONF_VAL, EXYNOS4_MIU_BASE +
 		APB_SFR_INTERLEAVE_CONF_OFFSET);
@@ -210,4 +219,5 @@ void mem_ctrl_init(int reset)
 	dmc = (struct exynos4_dmc *)(samsung_get_base_dmc_ctrl()
 					+ DMC_OFFSET);
 	dmc_init(dmc);
+
 }

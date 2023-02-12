@@ -17,7 +17,7 @@
 #ifndef CONFIG_SPL_DM
 /* Pointer to as well as the global data structure for SPL */
 DECLARE_GLOBAL_DATA_PTR;
-
+#error "this is spl build"
 /*
  * WARNING: This is going away very soon. Don't use it and don't submit
  * pafches that rely on it. The global_data area is set up in crt0.S.

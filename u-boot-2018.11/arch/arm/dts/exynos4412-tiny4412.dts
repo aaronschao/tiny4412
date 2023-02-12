@@ -1,0 +1,39 @@
+// SPDX-License-Identifier: GPL-2.0+
+/*
+ * Samsung's Exynos4412 tiny4412 board device tree source
+ *
+ * Copyright (c) 2014 Samsung Electronics Co., Ltd.
+ *		http://www.samsung.com
+ */
+
+/dts-v1/;
+#include "skeleton.dtsi"
+#include "exynos4412.dtsi"
+
+/ {
+	model = "Tiny4412 board based on Exynos4412";
+	compatible = "insignal,tiny4412", "samsung,exynos4412";
+
+	chosen {
+		bootargs ="";
+	};
+
+	config {
+		/* sd_env_offset = 512 + 8*1024 + 16*1024 + 800*1024 */
+		u-boot,sd-env-offset = <0xCE200>;
+		/* emmc_env_offset = sd_env_offset - 512 */
+		u-boot,emmc-env-offset = <0xCE000>;
+	};
+
+	aliases {
+		serial0 = "/serial@13800000";
+		console = "/serial@13800000";
+	};
+};
+
+&sdhci2 {
+	samsung,bus-width = <4>;
+	samsung,timing = <1 2 3>;
+	cd-gpios = <&gpk2 2 0>;
+	status = "okay";
+};
