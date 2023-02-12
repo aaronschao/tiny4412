@@ -11,6 +11,8 @@
 /dts-v1/;
 #include "exynos4412.dtsi"
 #include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/usb4640/usb4640.h>
+
 
 / {
 	model = "FriendlyARM TINY4412 board based on Exynos4412";
@@ -66,6 +68,12 @@
 			clock-frequency = <24000000>;
 		};
 	};
+
+    usb-hub {
+        compatible = "smsc,usb4640";
+        reset-gpios = <&gpm2 4 GPIO_ACTIVE_LOW>;
+        initial-mode = <USB4640_MODE_HUB>;
+    };
 };
 
 &rtc {
@@ -93,4 +101,19 @@
 
 &serial_3 {
 	status = "okay";
+};
+&exynos_usbphy {
+	status = "okay";
+};
+&ehci {
+	status = "okay";
+	port@0 {
+		status = "okay";
+	};
+	port@1 {
+		status = "okay";
+	};
+	port@2 {
+		status = "okay";
+	};
 };
