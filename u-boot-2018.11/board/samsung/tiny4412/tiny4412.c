@@ -19,11 +19,18 @@ u32 get_board_rev(void)
 
 int exynos_init(void)
 {
+#ifdef CONFIG_CMD_USB
+	gpio_request(EXYNOS4X12_GPIO_M24, "USB4604 Reset");
+#endif
 	return 0;
 }
 
+
+
 int board_usb_init(int index, enum usb_init_type init)
 {
+	gpio_direction_output(EXYNOS4X12_GPIO_M24, 0);
+    gpio_direction_output(EXYNOS4X12_GPIO_M24, 1);
 	return 0;
 }
 

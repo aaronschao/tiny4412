@@ -923,7 +923,7 @@ static const init_fnc_t init_sequence_f[] = {
 void board_init_f(ulong boot_flags)
 {
 	gd->flags = boot_flags;
-	gd->have_console = 0;
+	gd->have_console = 1;
 
 	if (initcall_run_list(init_sequence_f))
 		hang();

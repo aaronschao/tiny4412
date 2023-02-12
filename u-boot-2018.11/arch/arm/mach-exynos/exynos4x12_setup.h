@@ -23,6 +23,8 @@
 #ifdef CONFIG_CLK_1000_400_200
 #define DRAM_CLK_400
 #endif
+#define NR_TZASC_BANKS                  4
+#define RA0_VAL                         0xf0000000
 
 #define XXTI                            0x0
 #define XUSBXTI                         0x1

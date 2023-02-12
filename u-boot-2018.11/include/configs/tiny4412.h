@@ -14,7 +14,9 @@
 #define CONFIG_EXYNOS4412		1	/* which is a EXYNOS4412 SoC */
 #define CONFIG_TINY4412			1	/* working with TINY4412*/
 
-#define CONFIG_SYS_DCACHE_OFF		1
+//#define CONFIG_SYS_DCACHE_OFF		1
+
+#define CONFIG_USB_EHCI_EXYNOS 1
 
 /* TINY4412 has 4 bank of DRAM */
 #define CONFIG_SYS_SDRAM_BASE		0x40000000

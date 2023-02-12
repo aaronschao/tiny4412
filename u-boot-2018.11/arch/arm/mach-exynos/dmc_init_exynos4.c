@@ -86,6 +86,16 @@ static void dmc_config_mrs(struct exynos4_dmc *dmc, int chip)
 	}
 }
 
+static void tzasc_init(void) {
+	unsigned int start = samsung_get_base_dmc_tzasc();
+
+    unsigned int end = start + (DMC_OFFSET * (NR_TZASC_BANKS - 1));
+	for (; start <= end; start += DMC_OFFSET) {
+		struct exynos4412_tzasc *asc = (struct exynos4412_tzasc *)start;
+		writel(RA0_VAL, &asc->region_attributes_0);
+	}
+}
+
 static void dmc_init(struct exynos4_dmc *dmc)
 {
 	/*
@@ -220,4 +230,5 @@ void mem_ctrl_init(int reset)
 					+ DMC_OFFSET);
 	dmc_init(dmc);
 
+	tzasc_init();
 }
