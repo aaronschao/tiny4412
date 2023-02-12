@@ -1,0 +1,11 @@
+
+export TOPDIR=${PWD}
+export ARCH=arm
+export CROSS_COMPILE=arm-linux-
+
+CC_PATH=${TOPDIR}/buildroot-2022.02.9/output/host/bin
+CC_FLAG=$(echo $PATH | grep ${CC_PATH})
+
+if [ -d "${CC_PATH}" ]; then
+    [ -z "${CC_FLAG}" ] && export PATH=${PATH}:${CC_PATH}
+fi
